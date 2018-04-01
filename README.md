@@ -8,24 +8,31 @@ To use it, first install Docker for your OS:
 * Mac: https://docs.docker.com/docker-for-mac/install/
 
 Then pull it from the public repository, https://hub.docker.com/r/qarj/webinject/
-    ```
-    docker pull qarj/webinject
-    ```
+
+```
+docker pull qarj/webinject
+```
 
 ## Usage
 
 ### Directly from your OS command line
 
 To execute the example tests `examples/hello.xml`:
-    ```docker run -it --rm webinject examples/hello.xml```
+```
+docker run -it --rm webinject examples/hello.xml
+```
 
 ### From within the container
 
 To enter the container:
-    ```docker run -it --entrypoint /bin/bash webinject```
+```
+docker run -it --entrypoint /bin/bash webinject
+```
 
 Then run a test:
-    ```perl webinject.pl examples/hello.xml```
+```
+perl webinject.pl examples/hello.xml
+```
 
 ## Further info
 
