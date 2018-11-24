@@ -1,0 +1,96 @@
+FROM ubuntu:18.04
+MAINTAINER qarj
+
+#
+# Setup basic environment
+#
+
+ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8 LC_ALL=C.UTF-8 LANGUAGE=en_US.UTF-8
+
+#Update system and install packages
+RUN [ "apt-get", "-q", "update" ]
+RUN [ "apt-get", "-qy", "--force-yes", "upgrade" ]
+RUN [ "apt-get", "-qy", "--force-yes", "dist-upgrade" ]
+RUN [ "apt-get", "install", "-qy", "--force-yes", \
+      "perl", \
+      "build-essential", \
+      "cpanminus", \
+      "git" ]
+
+# Needed to install XML::Simple      
+RUN ["apt-get", "install", "-qy", "--force-yes", "libexpat1-dev"]
+
+# Needed to install LWP::Protocol::https     
+RUN ["apt-get", "install", "-qy", "--force-yes", "libssl-dev"]
+RUN apt-get install -y curl libio-socket-ssl-perl libnet-ssleay-perl
+
+RUN [ "apt-get", "clean" ]
+RUN [ "rm", "-rf", "/var/lib/apt/lists/*", "/tmp/*", "/var/tmp/*" ]
+
+
+#
+# Install project WebImblaze
+#
+
+#Install cpan modules
+RUN ["cpanm", "File::Slurp" ]
+RUN ["cpanm", "Data::Dumper" ]
+RUN ["cpanm", "LWP" ]
+RUN ["cpanm", "XML::Simple" ]
+RUN ["cpanm", "Math::Random::ISAAC" ]
+RUN ["cpanm", "LWP::Protocol::https" ]
+
+#Clone the WebImblaze Project
+WORKDIR /usr/local/bin
+RUN ["git", "clone", "--progress", "--verbose", "https://github.com/Qarj/WebImblaze", "/usr/local/bin/WebImblaze"]
+
+RUN ["ls", "-asl"]
+WORKDIR /usr/local/bin/WebImblaze
+RUN ["pwd"]
+RUN ["ls", "-asl"]
+
+#Make executable
+RUN find . -type d -exec chmod a+rwx {} \;
+RUN find . -type f -exec chmod a+rw {} \;
+RUN [ "chmod", "+x",  "wi.pl" ]
+
+#Display help
+RUN [ "./wi.pl", "--help" ]
+
+
+#
+# Install project WebImblaze-Framework
+#
+
+RUN [ "apt-get", "install", "-qy", "--force-yes", \
+      "gnome-terminal" ]
+
+WORKDIR /usr/local/bin
+RUN ["git", "clone", "--progress", "--verbose", "https://github.com/Qarj/WebImblaze-Framework", "/usr/local/bin/WebImblaze-Framework"]
+
+WORKDIR /var
+RUN mkdir www
+RUN mkdir www/html
+WORKDIR /var/www
+RUN find . -type d -exec chmod a+rwx {} \;
+
+WORKDIR /usr/local/bin/WebImblaze-Framework
+RUN find . -type d -exec chmod a+rwx {} \;
+RUN find . -type f -exec chmod a+rw {} \;
+RUN [ "chmod", "+x",  "wif.pl" ]
+
+RUN ["cpanm", "Config::Tiny" ]
+RUN ["cpanm", "File::Find::Rule" ]
+RUN ["cpanm", "XML::Twig" ]
+
+RUN perl wif.pl --create-config
+RUN perl wif.pl --help
+
+# Web server location of /var/www/html does not exist
+#RUN perl wif.pl canary/canary.test
+
+RUN echo step: whereisthiswritten > tests/whereisthiswritten.test
+
+#Set entry point of script.pl
+ENTRYPOINT [ "/usr/local/bin/WebImblaze-Framework/wif.pl" ]
+
