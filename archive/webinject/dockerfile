@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 MAINTAINER qarj
 
 #Setup basic environment
@@ -19,7 +19,6 @@ RUN ["apt-get", "install", "-qy", "--force-yes", "libexpat1-dev"]
 
 # Needed to install LWP::Protocol::https     
 RUN ["apt-get", "install", "-qy", "--force-yes", "libssl-dev"]
-RUN apt-get install -y curl libio-socket-ssl-perl libnet-ssleay-perl
 
 RUN [ "apt-get", "clean" ]
 RUN [ "rm", "-rf", "/var/lib/apt/lists/*", "/tmp/*", "/var/tmp/*" ]
@@ -32,23 +31,21 @@ RUN ["cpanm", "XML::Simple" ]
 RUN ["cpanm", "Math::Random::ISAAC" ]
 RUN ["cpanm", "LWP::Protocol::https" ]
 
-#Clone the WebImblaze Project
-WORKDIR /usr/local/bin
-RUN ["git", "clone", "--progress", "--verbose", "https://github.com/Qarj/WebImblaze", "/usr/local/bin/WebImblaze"]
+#Clone the WebInject Project
+WORKDIR /app
+RUN ["git", "clone", "--progress", "--verbose", "https://github.com/Qarj/WebInject", "/app/WebInject"]
 
 RUN ["ls", "-asl"]
-WORKDIR /usr/local/bin/WebImblaze
+WORKDIR /app/WebInject
 RUN ["pwd"]
 RUN ["ls", "-asl"]
 
 #Make executable
-RUN find . -type d -exec chmod a+rwx {} \;
-RUN find . -type f -exec chmod a+rw {} \;
-RUN [ "chmod", "+x",  "wi.pl" ]
+RUN [ "chmod", "+x",  "webinject.pl" ]
 
 #Display help
-RUN [ "./wi.pl", "--help" ]
+RUN [ "./webinject.pl", "--help" ]
 
-#Set entry point of script.pl
-ENTRYPOINT [ "/usr/local/bin/WebImblaze/wi.pl" ]
+#Set entrypoint of script.pl
+ENTRYPOINT [ "/app/WebInject/webinject.pl" ]
 
