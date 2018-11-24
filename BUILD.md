@@ -1,4 +1,4 @@
-# Build WebInject into a container
+# Build WebImblaze into a container
 
 ## Build it
 
@@ -22,6 +22,7 @@ To force a full rebuild:
 
 ## Publish it
 
+From MINGW64
 ```
 export DOCKER_ID_USER="qarj"
 docker login
