@@ -34,6 +34,11 @@ Then run a test:
 perl wi.pl examples/demo.test
 ```
 
+### Run single local testcase in container
+```
+docker run -it --mount type=bind,source="$(pwd)/your-testcase.test",target=/usr/local/bin/WebImblaze/examples/get.test qarj/webimblaze
+```
+
 ## Further info
 
 To build the container yourself, see [BUILD.md](BUILD.md). 
