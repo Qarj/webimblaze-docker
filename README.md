@@ -36,7 +36,7 @@ perl wi.pl examples/demo.test
 
 ### Run single local testcase in container
 ```
-docker run -it --mount type=bind,source="$(pwd)/your-testcase.test",target=/usr/local/bin/WebImblaze/examples/get.test qarj/webimblaze
+docker run -it --mount type=bind,source="/path/to/your-testcase.test",target=/usr/local/bin/WebImblaze/examples/get.test qarj/webimblaze
 ```
 
 ## Further info
