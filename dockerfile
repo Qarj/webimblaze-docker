@@ -1,5 +1,4 @@
 FROM ubuntu:22.04
-MAINTAINER qarj
 
 #Setup basic environment
 ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8 LC_ALL=C.UTF-8 LANGUAGE=en_US.UTF-8

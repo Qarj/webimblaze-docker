@@ -2,11 +2,17 @@
 
 ## Build it
 
-Start Docker, then go to a command line:
-    `docker build -t webimblaze .`
+Start Docker, then
 
-To force a full rebuild:
-    `docker build --no-cache -t webimblaze .`
+```sh
+docker build -t webimblaze .
+```
+
+To force a full rebuild
+
+```sh
+docker build --no-cache -t webimblaze .
+```
 
 ## Debug it
 
@@ -22,8 +28,7 @@ To force a full rebuild:
 
 ## Publish it
 
-From MINGW64
-```
+```sh
 export DOCKER_ID_USER="qarj"
 docker login
 docker tag webimblaze $DOCKER_ID_USER/webimblaze
